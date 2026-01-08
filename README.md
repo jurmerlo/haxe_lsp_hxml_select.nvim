@@ -42,3 +42,8 @@ hxml/linux.hxml
 If `run_on_open` is enabled, the selector will automatically open the first time you open a `.hx` file.  
 If disabled the first option in the list will be selected automatically.  
 You can also manually trigger the selector using the command: `SetHxml`. This command gets added after you have opened a `.hx` file.
+
+### Using with lime or other frameworks
+
+The lsp needs to have a hxml to read from. Some frameworks require you to build the project once, to generate the hxml files.  
+For lime for example, you run `lime build html5` first for example. This will generate the files needed.
