@@ -11,13 +11,13 @@ local current_hxml = nil
 local run_on_open = true
 
 -- Get a list of hxml file paths.
--- First look for a .hxml in the current working directory.
--- If not found, search for all .hxml files in the working directory and its subdirectories.
+-- First look for a hxml_select in the current working directory.
+-- If not found, search for all *.hxml files in the working directory and its subdirectories.
 local function get_hxml_path_list()
 	local cwd = vim.fn.getcwd()
 
-	-- First check for a .hxml file in the current working directory.
-	local path = cwd .. "/.hxml"
+	-- First check for a hxml_select file in the current working directory.
+	local path = cwd .. "/hxml_select"
 	if vim.fn.filereadable(path) == 1 then
 		local lines = vim.fn.readfile(path)
 		if #lines > 0 then
@@ -83,6 +83,16 @@ function M.setup(opts)
 	end
 
 	run_on_open = opts.run_on_open
+
+	if opts.lsp_path ~= nil then
+		haxe_lsp_server_path = opts.lsp_path
+	end
+
+	local root_dir = vim.fn.getcwd()
+	if opts.root_dir ~= nil then
+		root_dir = opts.root_dir
+	end
+
 	local displayArguments = {}
 
 	-- If we don't run on open, set the displayArguments to the first hxml path.
@@ -94,7 +104,7 @@ function M.setup(opts)
 	vim.lsp.config.haxe_language_server = {
 		cmd = { "node", haxe_lsp_server_path },
 		filetypes = { "haxe" },
-		root_dir = vim.fn.getcwd(),
+		root_dir = root_dir,
 		init_options = {
 			displayArguments = displayArguments,
 		},
